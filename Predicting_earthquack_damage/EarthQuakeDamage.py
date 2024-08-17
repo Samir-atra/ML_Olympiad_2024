@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 import time
 
-# create dataset
+# load and create dataset
 features = []
 labels = []
 counter = 0
@@ -21,33 +21,34 @@ for vec, label in train:
     if counter %500 == 0:
         time.sleep(5)
         print("sleeping")
-dataset = tf.data.Dataset.from_tensor_slices((vectors, labes))
+dataset = tf.data.Dataset.from_tensor_slices((vectors, labels))
 
-# with open("train.csv", "r") as train_set:
-#     next(train_set)
-#     for row in train_set:
-#         features.append(row.split(',')[0:35])
-#         labels.append(row.strip().split(',')[36])
-# print(set(labels))
+with open("train.csv", "r") as train_set:
+    next(train_set)
+    for row in train_set:
+        features.append(row.split(',')[0:35])
+        labels.append(row.strip().split(',')[36])
+print(set(labels))
 
-# # preprocessing
-# features = np.array(features)
-# labels = np.array(labels)
-# labels = np.reshape(labels,(4000,1))
+# preprocessing
+features = np.array(features)
+labels = np.array(labels)
+labels = np.reshape(labels,(4000,1))
+
 # building model
-# model = tf.keras.Sequential([
-#     tf.keras.layers.Dense(128, activation = "sigmoid"),
-#     tf.keras.layers.Dense(32,activation= 'sigmoid'),
-#     tf.keras.layers.Dense(3, activation = 'sigmoid')
-# ])
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(128, activation = "sigmoid"),
+    tf.keras.layers.Dense(32,activation= 'sigmoid'),
+    tf.keras.layers.Dense(3, activation = 'sigmoid')
+])
 
-# model.compile(
-#     loss = 'mse',
-#     optimizer = tf.keras.optimizers.Adam(learning_rate= 0.0001),
-#     metrics= ['accuracy'],
-# )
+model.compile(
+    loss = 'mse',
+    optimizer = tf.keras.optimizers.Adam(learning_rate= 0.0001),
+    metrics= ['accuracy'],
+)
 
-# model.fit(
-#     dataset,
-#     epochs = 100
-# )
+model.fit(
+    dataset,
+    epochs = 100
+)
